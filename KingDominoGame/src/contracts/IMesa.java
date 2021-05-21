@@ -1,6 +1,10 @@
 package contracts;
 
+import shared.FichaDomino;
+
 public interface IMesa {
-	public IDomino obtenerFicha(int posicion);
-	public boolean descartarFicha(int posicion);
+	public boolean desplegarFichasDomino();
+	public boolean descartarFichasDominoInutilizadas(int posicion);
+	public FichaDomino obtenerFicha(int posicion);
+	public void mostrarMesa();
 }
