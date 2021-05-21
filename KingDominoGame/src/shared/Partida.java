@@ -101,18 +101,21 @@ public class Partida implements IPartida {
 		this.sortearOrdenReyes();
 		while (numeroRonda <= RONDA_FINAL) {
 
-			System.out.println("Turno: " + numeroRonda);
+			System.out.println("Ronda: " + numeroRonda);
 
 			this.mesa.desplegarFichasDomino();
 			
 			for (Entry<Integer, IJugador> jugador : this.ordenJugadores.entrySet()) {
+				System.out.println("Jugador " + jugador.getKey() + " seleccione una ficha");
 				this.mesa.mostrarMesa();
 				int posicionCarta = -1;
 				Scanner teclado = new Scanner(System.in);
 				posicionCarta = teclado.nextInt();
 				jugador.getValue().elegirFicha(posicionCarta);
-				
+				System.out.println();
+				System.out.print("La carta seleccionada fue: ");
 				System.out.println(jugador.getValue().verCartaSeleccionada());
+				System.out.println();
 			}
 
 			numeroRonda++;
