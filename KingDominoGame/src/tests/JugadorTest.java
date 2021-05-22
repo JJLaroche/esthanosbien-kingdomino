@@ -1,103 +1,51 @@
 package tests;
-
+ 
 import static org.junit.Assert.*;
-
+ 
 import org.junit.Test;
-
-import contracts.IDomino;
-import contracts.IJugador;
-import contracts.IMesa;
-import contracts.ITablero;
+ 
 import shared.Jugador;
-
+import shared.Mazo;
+import shared.Mesa;
+import shared.Tablero;
+ 
 public class JugadorTest {
-	  
-	@Test
-	public void testConstructor() {
-		
-		ITablero tableroMock = new TableroMock(false);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, false);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		 assertEquals("Franco", jugador.getNombreJugador());
-		 assertFalse(jugador.colocarFichaDomino(1, 2));
-	}
-	
-	@Test
-	public void testcolocarFichaDominoNoError() {
-		
-		ITablero tableroMock = new TableroMock(false);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, false);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		 assertFalse(jugador.colocarFichaDomino(1, 2));
-	}
-	
-	@Test
-	public void testcolocarFichaDominoError() {
-		
-		ITablero tableroMock = new TableroMock(true);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, false);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		 assertTrue(jugador.colocarFichaDomino(1, 2));
-	}
-	
-	
-	@Test
-	public void testdescartarFichaNoError() {
-		
-		ITablero tableroMock = new TableroMock(true);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, false);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		 assertFalse(jugador.descartarFicha());
-	}
-	
-	@Test
-	public void testdescartarFichaError() {
-		
-		ITablero tableroMock = new TableroMock(true);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, true);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		 assertTrue(jugador.descartarFicha());
-	}
-	
-	@Test
-	public void testGetColorRey() {
-		
-		ITablero tableroMock = new TableroMock(true);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, true);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-		
-		jugador.elegirColorRey("Rojo");
-		
-		 assertEquals("Rojo", jugador.getColorRey());
-	}
-	
-	@Test
-	public void testGetColorReyNoSelected() {
-		
-		ITablero tableroMock = new TableroMock(true);
-		IDomino dominoMock = new DominoMock();
-		IMesa mesaMock = new MesaMock(dominoMock, true);
-		
-		IJugador jugador = new Jugador("Franco", tableroMock, mesaMock);
-				
-		 assertNull(jugador.getColorRey());
-	}
+ 
+    @Test
+    public void testConstructor() {
+
+        Jugador jugador = new Jugador("Franco", new Tablero(5), new Mesa(new Mazo()));
+        assertEquals("Franco", jugador.getNombreJugador());
+    }
+
+    @Test
+    public void testGetPuntos() {
+        Jugador jugador = new Jugador("Franco", new Tablero(5), new Mesa(new Mazo()));
+        assertEquals(0, jugador.getPuntos().getPuntos());
+    }
+
+    @Test
+    public void verCartaSeleccionada() {
+        Mazo mazo = new Mazo();
+        Mesa mesa = new Mesa(mazo);
+        mesa.desplegarFichasDomino();
+        Jugador jugador = new Jugador("Franco", new Tablero(5), mesa);
+
+        jugador.elegirFicha(1);
+
+        assertNotNull(jugador.verCartaSeleccionada());
+    }
+
+    @Test
+    public void testcolocarFichaDomino() {
+        Mazo mazo = new Mazo();
+        Mesa mesa = new Mesa(mazo);
+        mesa.desplegarFichasDomino();
+        Jugador jugador = new Jugador("Franco", new Tablero(5), mesa);
+
+        jugador.elegirFicha(1);
+
+        assertFalse(jugador.colocarFichaDomino(1, 1, 1));
+    }
 
 }

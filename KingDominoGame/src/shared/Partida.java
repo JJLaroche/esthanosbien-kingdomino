@@ -4,11 +4,6 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import contracts.*;
-import shared.Jugador;
-import shared.Mazo;
-import shared.Mesa;
-
-import java.util.Scanner;
 
 import java.io.*;
 
@@ -16,14 +11,14 @@ public class Partida implements IPartida {
 
 	int cantidadJugadores;
 	String idPartida;
-	ArrayList<IJugador> jugadoresActuales;
-	HashMap<Integer, IJugador> ordenJugadores;
-	HashMap<IJugador, Tablero> tablerosJugadores;
+	ArrayList<Jugador> jugadoresActuales;
+	HashMap<Integer, Jugador> ordenJugadores;
+	HashMap<Jugador, Tablero> tablerosJugadores;
 	int numeroRonda;
-	private IMesa mesa;
+	private Mesa mesa;
 	final int RONDA_FINAL = 2;
 
-	public Partida(IMesa mesa) {
+	public Partida(Mesa mesa) {
 		this.mesa = mesa;
 		this.numeroRonda = 1;
 	}
@@ -34,16 +29,16 @@ public class Partida implements IPartida {
 		Scanner teclado = new Scanner(System.in);
 
 		System.out.print("Ingrese cuantos jugadores participaran(de 2 a 4): ");
-
-		cantJugadores = teclado.nextInt();
-
-		while (cantJugadores < 2 || cantJugadores > 4) {
-			System.out.print("Ingrese nuevamente: ");
+		try {
 			cantJugadores = teclado.nextInt();
+			while (cantJugadores < 2 || cantJugadores > 4) {
+				System.out.print("Ingrese nuevamente: ");
+				cantJugadores = teclado.nextInt();
+			}
+			this.cantidadJugadores = cantJugadores;
+		} catch (Exception e) {
+			definirCantidadJugadores();
 		}
-
-		this.cantidadJugadores = cantJugadores;
-
 	}
 
 	public int modoDeJuego(int cantJugadores) throws IOException {
@@ -57,7 +52,7 @@ public class Partida implements IPartida {
 	}
 
 	public void nombrarJugadores() {
-		jugadoresActuales = new ArrayList<IJugador>();
+		jugadoresActuales = new ArrayList<Jugador>();
 
 		String nombre = "";
 		Scanner teclado = new Scanner(System.in);
@@ -68,12 +63,9 @@ public class Partida implements IPartida {
 			System.out.print("Ingrese nombre Jugador " + (i + 1) + ": ");
 			nombre = teclado.nextLine();
 
-			Jugador jugador = new Jugador(nombre, new Tablero(5), this.mesa);
+			Jugador jugador = new Jugador(nombre, new Tablero(1), this.mesa);
 			jugadoresActuales.add(jugador);
 		}
-
-		System.out.println(jugadoresActuales);
-
 	}
 
 	public void mostrarGanador(String nombre, double puntaje) {
@@ -83,20 +75,27 @@ public class Partida implements IPartida {
 
 	@Override
 	public void sortearOrdenReyes() {
-		if (numeroRonda == 1) {
-			Collections.shuffle(this.jugadoresActuales);
-			this.ordenJugadores = new HashMap<Integer, IJugador>(this.cantidadJugadores);
-			for (int i = 0; i < this.jugadoresActuales.size(); i++) {
-				this.ordenJugadores.put(i + 1, this.jugadoresActuales.get(i));
-			}
-		} else {
-
+		Collections.shuffle(this.jugadoresActuales);
+		this.ordenJugadores = new HashMap<Integer, Jugador>(this.cantidadJugadores);
+		for (int i = 0; i < this.jugadoresActuales.size(); i++) {
+			this.ordenJugadores.put(i + 1, this.jugadoresActuales.get(i));
 		}
+	}
 
+	public void seleccionarOrdenJugadores(int[] Disponibyorden) {
+		Integer a = 1;
+		for (int i : Disponibyorden) {
+			if (i != 0)
+				this.ordenJugadores.put(a++, this.jugadoresActuales.get(i - 1));
+		}
 	}
 
 	@Override
 	public boolean iniciarPartida() {
+
+		int posicionC;
+		int posicionF;
+		int orientacion;
 
 		this.sortearOrdenReyes();
 		while (numeroRonda <= RONDA_FINAL) {
@@ -104,35 +103,70 @@ public class Partida implements IPartida {
 			System.out.println("Ronda: " + numeroRonda);
 
 			this.mesa.desplegarFichasDomino();
-			
-			for (Entry<Integer, IJugador> jugador : this.ordenJugadores.entrySet()) {
-				System.out.println("Jugador " + jugador.getKey() + " seleccione una ficha");
+			int[] Disponibyorden = { 0, 0, 0, 0 };
+			for (Entry<Integer, Jugador> jugador : this.ordenJugadores.entrySet()) {
+				System.out.println("\n" + jugador.getValue().getNombreJugador() + " seleccione una ficha: ");
 				this.mesa.mostrarMesa();
+				System.out.print("->");
 				int posicionCarta = -1;
 				Scanner teclado = new Scanner(System.in);
-				posicionCarta = teclado.nextInt();
+				do {
+					posicionCarta = teclado.nextInt();
+					if (Disponibyorden[posicionCarta - 1] != 0)// vector
+						System.out.println("Carta ya elegida por otro jugador. Elija otra.");
+					if (posicionCarta > 4 || posicionCarta < 1)
+						System.out.println(
+								"Carta invalida.\nJugador " + jugador.getKey() + " seleccione una ficha nuevamente.");
+				} while ((posicionCarta > 4 || posicionCarta < 1) || (Disponibyorden[posicionCarta - 1] != 0));
 				jugador.getValue().elegirFicha(posicionCarta);
+				Disponibyorden[posicionCarta - 1] = jugador.getKey();
 				System.out.println();
 				System.out.print("La carta seleccionada fue: ");
-				System.out.println(jugador.getValue().verCartaSeleccionada());
+				System.out.print(jugador.getValue().verCartaSeleccionada());
 				System.out.println();
-			}
 
+				jugador.getValue().mostrarTableroActivo();
+				do {
+					System.out.print("Ingrese Fila: ");
+					posicionF = teclado.nextInt();
+					System.out.print("Ingrese Columna: ");
+					posicionC = teclado.nextInt();
+					System.out.print(
+							"Ingrese orientacion: \n1-Horizontal \n2-Horizontal Invertida \n3-Vertical \n4-Vertical Invertida\n-> ");
+					orientacion = teclado.nextInt();
+				} while ((posicionF < 0 || posicionF > 8) || (posicionC < 0 || posicionC > 8)
+						|| !(jugador.getValue().colocarFichaDomino(posicionF, posicionC, orientacion)));
+			}
 			numeroRonda++;
+			seleccionarOrdenJugadores(Disponibyorden);
 		}
+		for (Jugador jugador : jugadoresActuales) {
+			jugador.mostrarTableroActivo();
+		}
+		finalizarPartida(calcularGanador());
 		return true;
 	}
 
 	@Override
-	public boolean finalizarPartida() {
-		// TODO Auto-generated method stub
-		return false;
+	public void finalizarPartida(ArrayList<Jugador> posiciones) {
+		int i = 1;
+		for (Jugador jugador : posiciones) {
+			if (i == 1)
+				System.out.println("\n¡Felicitaciones " + jugador.getNombreJugador() + " ha ganado!");
+			System.out.println(i + ". " + jugador.getNombreJugador() + "(" + jugador.getPuntos().getPuntos() + "pts.)");
+			i++;
+		}
+		return;
 	}
 
 	@Override
-	public IJugador calcularGanador() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Jugador> calcularGanador() {
+		ArrayList<Jugador> posiciones = new ArrayList<Jugador>();
+		for (Jugador jugador : jugadoresActuales) {
+			posiciones.add(jugador);
+		}
+		posiciones.sort(new Comparator_Puntaje());
+		return posiciones;
 	}
 
 	@Override
@@ -140,4 +174,8 @@ public class Partida implements IPartida {
 		return "Partida [jugadoresActuales=" + jugadoresActuales + "]";
 	}
 
+	public void setJugador(Jugador jug) {
+		this.jugadoresActuales = new ArrayList<Jugador>();
+		this.jugadoresActuales.add(jug);
+	}
 }

@@ -1,21 +1,28 @@
 package shared;
-import contracts.IDomino;
+
 import contracts.IJugador;
-import contracts.IMesa;
-import contracts.ITablero;
  
 public class Jugador implements IJugador {
  
-    private ITablero tablero;
-    private IMesa mesa;
+    private Tablero tablero;
+    private Mesa mesa;
     private int posicionFicha;
     private String colorRey;
     private String nombreJugador;
+    private Puntuacion puntos;
 
-    public Jugador(String nombre, ITablero tablero, IMesa mesa) {
+    public Jugador(String nombre, Tablero tablero, Mesa mesa) {
         this.nombreJugador = nombre;
         this.tablero = tablero;
         this.mesa = mesa;
+        this.puntos = new Puntuacion();
+    }
+    
+    public Puntuacion getPuntos() {
+    	return this.puntos;
+    }
+    public void mostrarTableroActivo() {
+    	this.tablero.mostrarTablero();
     }
     
     @Override
@@ -24,17 +31,21 @@ public class Jugador implements IJugador {
     }
 
     @Override
-    public boolean colocarFichaDomino(int x, int y) {
-        IDomino domino = this.mesa.obtenerFicha(this.posicionFicha);
-        return this.tablero.ponerDomino(x, y, domino);
+    public boolean colocarFichaDomino(int x, int y, int orientacion) {
+        FichaDomino domino = this.mesa.obtenerFicha(this.posicionFicha);
+        return this.tablero.evaluarPosicion(domino, orientacion, x, y);
     }
 
     @Override
     public void elegirFicha(int posicionFicha) {
-        this.posicionFicha = posicionFicha;
+        this.posicionFicha = posicionFicha-1;
     }
 
-    @Override
+    public Tablero getTablero() {
+		return tablero;
+	}
+
+	@Override
     public boolean descartarFicha() {
         this.posicionFicha = -1;
         return this.mesa.descartarFichasDominoInutilizadas(this.posicionFicha);
@@ -57,6 +68,4 @@ public class Jugador implements IJugador {
 	public String toString() {
 		return "Jugador [nombreJugador=" + nombreJugador + "]";
 	}
-    
-    
 }

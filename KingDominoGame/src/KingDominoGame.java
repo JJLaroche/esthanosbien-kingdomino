@@ -15,8 +15,6 @@ public class KingDominoGame {
 	        partidaActual.definirCantidadJugadores();
 	        partidaActual.nombrarJugadores();
 	        partidaActual.iniciarPartida();
-	        
-	        System.out.println("Terminamos");
 	}
 
 }

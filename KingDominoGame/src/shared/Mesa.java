@@ -3,7 +3,6 @@ package shared;
 import java.util.ArrayList;
 
 import contracts.IDomino;
-import contracts.IJugador;
 import contracts.IMazo;
 
 //import java.util.ArrayList;
@@ -20,17 +19,21 @@ public class Mesa implements IMesa{
 	}
 	
 	@Override
-	public boolean desplegarFichasDomino() {
+	public void desplegarFichasDomino() {
 		this.fichasActuales = new ArrayList<IDomino>();
 		for (int i = 0; i < 4 ; i++) {
 			this.fichasActuales.add(this.mazo.obtenerFichaMazo());
 		}
-		return false;
+		return;
 	}
 	
 	public void mostrarMesa() {
-		System.out.println(this.fichasActuales);
-		System.out.println();
+		int i=1;
+		for (IDomino iDomino : fichasActuales) {
+			System.out.print(i+". ");
+			i++;
+			System.out.println(iDomino);
+		}
 	}
 
 	@Override
