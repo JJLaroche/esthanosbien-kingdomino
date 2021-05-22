@@ -16,7 +16,7 @@ public class Partida implements IPartida {
 	HashMap<Jugador, Tablero> tablerosJugadores;
 	int numeroRonda;
 	private Mesa mesa;
-	final int RONDA_FINAL = 2;
+	final int RONDA_FINAL = 6;
 
 	public Partida(Mesa mesa) {
 		this.mesa = mesa;
@@ -105,9 +105,10 @@ public class Partida implements IPartida {
 			this.mesa.desplegarFichasDomino();
 			int[] Disponibyorden = { 0, 0, 0, 0 };
 			for (Entry<Integer, Jugador> jugador : this.ordenJugadores.entrySet()) {
+				jugador.getValue().mostrarTableroActivo();
 				System.out.println("\n" + jugador.getValue().getNombreJugador() + " seleccione una ficha: ");
 				this.mesa.mostrarMesa();
-				System.out.print("->");
+				System.out.print("   ->");
 				int posicionCarta = -1;
 				Scanner teclado = new Scanner(System.in);
 				do {
@@ -124,17 +125,15 @@ public class Partida implements IPartida {
 				System.out.print("La carta seleccionada fue: ");
 				System.out.print(jugador.getValue().verCartaSeleccionada());
 				System.out.println();
-
-				jugador.getValue().mostrarTableroActivo();
 				do {
 					System.out.print("Ingrese Fila: ");
 					posicionF = teclado.nextInt();
 					System.out.print("Ingrese Columna: ");
 					posicionC = teclado.nextInt();
 					System.out.print(
-							"Ingrese orientacion: \n1-Horizontal \n2-Horizontal Invertida \n3-Vertical \n4-Vertical Invertida\n-> ");
+							"Ingrese orientacion: \n1-Horizontal [T1|T2]\n2-Horizontal Invertida [T2|T1] \n3-Vertical [T1/T2] \n4-Vertical Invertida [T2/T1]\n   -> ");
 					orientacion = teclado.nextInt();
-				} while ((posicionF < 0 || posicionF > 8) || (posicionC < 0 || posicionC > 8)
+				} while ((posicionF < 0 || posicionF > 8) || (posicionC < 0 || posicionC > 8) || (orientacion<1 || orientacion>4)
 						|| !(jugador.getValue().colocarFichaDomino(posicionF, posicionC, orientacion)));
 			}
 			numeroRonda++;

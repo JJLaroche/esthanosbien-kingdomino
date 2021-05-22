@@ -77,7 +77,6 @@ public class Tablero implements ITablero{
 		//devuelve true o false segun se pueda -> si se puede, establece ficha
 	}
 	
-	@Override
 	public void ponerDomino(int fila, int columna, FichaDomino ficha, int orientacion) {
 		tablero[fila][columna]=ficha.getTerreno1().charAt(0);
 		corona[fila][columna]=ficha.getCoronast1();
@@ -89,21 +88,21 @@ public class Tablero implements ITablero{
 			corona[fila][columna+1]=ficha.getCoronast2();
 			this.acotarTablero(fila, columna+1);
 			break;
-			 
+			
 		case 2://|2|1|
 			tablero[fila][columna-1]=ficha.getTerreno2().charAt(0);
 			corona[fila][columna-1]=ficha.getCoronast2();
 			this.acotarTablero(fila, columna-1);
 			break;
 			
-			   //|1|
+			//|1|
 		case 3://|2|
 			tablero[fila+1][columna]=ficha.getTerreno2().charAt(0);
 			corona[fila+1][columna]=ficha.getCoronast2();
 			this.acotarTablero(fila+1, columna);
 			break;
 			
-			   //|2|
+			//|2|
 		case 4://|1|
 			tablero[fila-1][columna]=ficha.getTerreno2().charAt(0);
 			corona[fila-1][columna]=ficha.getCoronast2();
@@ -153,9 +152,6 @@ public class Tablero implements ITablero{
 		for (int i = 0; i < tablero.length; i++) {
 			System.out.print(i+"|");
 			for (int j = 0; j < tablero[i].length; j++) {
-//				if(tablero[i][j]=='C')
-//					System.out.print(tablero[i][j]);
-//				else
 					System.out.print(tablero[i][j]);
 				if (j != tablero[i].length - 1)
 					System.out.print("|");
@@ -165,8 +161,12 @@ public class Tablero implements ITablero{
 		System.out.println("  0 1 2 3 4 5 6 7 8");
 		
 	}
-
+	
 }
+
+
+
+
 
 // cada jugador tiene un tablero de 7x7 (expandible para considerar que el castillo
 // no este en el centro. Para que sea de 7x7, tiene que tener un alto y ancho de
