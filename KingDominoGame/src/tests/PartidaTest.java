@@ -31,14 +31,17 @@ public class PartidaTest {
 		char[][] tablero2 = { { 'B', 'V', 'G', 'A', 'B' }, { 'B', 'A', 'A', 'A', 'M' }, { 'B', 'M', 'C', 'V', 'A' },
 				{ 'A', 'A', 'T', 'B', 'M' }, { '_', '_', 'V', 'B', 'A' } };
 
-		Tablero table = new Tablero(corona, tablero);
-		Tablero table2 = new Tablero(corona, tablero2);
+		Tablero table = new Tablero(1);
+		Tablero table2 = new Tablero(1);
 
 		Jugador jugador1 = new Jugador("Ivan", table, mesa);
 		Jugador jugador2 = new Jugador("Mica", table2, mesa);
 
-		partida1.setJugador(jugador2);
-		partida1.setJugador(jugador1);
+		//partida1.setJugador(jugador2);
+		//partida1.setJugador(jugador1);
+		
+		partida1.jugadoresActuales.add(jugador1);
+		partida1.jugadoresActuales.add(jugador2);
 
 		ArrayList<Jugador> jugs = new ArrayList<Jugador>();
 

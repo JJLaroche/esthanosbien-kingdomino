@@ -5,12 +5,13 @@ import contracts.IDomino;
 public class FichaDomino implements IDomino {
 	private int IdDomino;
 	private int Orientacion = 1;
-	private String terreno1;
-	private String terreno2;
+	private Terreno terreno1;
+	private Terreno terreno2;
 	private int coronast1;
 	private int coronast2;
 
-	public FichaDomino(int ID, String terreno1, String terreno2, int coronast1,int coronast2) {
+	public FichaDomino(int ID, Terreno terreno1, Terreno terreno2, int coronast1, int coronast2) {
+		
 		this.IdDomino = ID;
 		this.terreno1 = terreno1;
 		this.terreno2 = terreno2;
@@ -36,11 +37,19 @@ public class FichaDomino implements IDomino {
 	}
 
 	public String getTerreno1() {
-		return terreno1;
+		return terreno1.getCodigoColor();
+	}
+	
+	public String getPathTerreno1() {
+		return terreno1.getPathTerreno();
 	}
 
 	public String getTerreno2() {
-		return terreno2;
+		return terreno2.getCodigoColor();
+	}
+	
+	public String getPathTerreno2() {
+		return terreno2.getPathTerreno();
 	}
 
 	public int DesplegarOrientacionDisponible() {
@@ -50,6 +59,6 @@ public class FichaDomino implements IDomino {
 	@Override
 	public String toString() {
 
-		return "|" + terreno1 + "|" + terreno2 + "|";
+		return "|" + terreno1.getCodigoColor() + "|" + terreno2.getCodigoColor() + "|";
 	}
 }
