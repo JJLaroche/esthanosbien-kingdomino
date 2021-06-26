@@ -6,12 +6,14 @@ import org.junit.Test;
 
 import shared.FichaDomino;
 import shared.Tablero;
+import shared.Terreno;
 
 public class TableroTest {
-
+	final String CampoAmarillo_0C = "Img/Fichas/Campo/TipoTerreno_Campo_0R.jpg";
+	final String CampoAmarillo_1C = "Img/Fichas/Campo/TipoTerreno_Campo_1R.jpg";
 	Tablero tablero = new Tablero(1);
-	FichaDomino ficha = new FichaDomino(48, "AMARILLO", "GRIS 3xC", 0, 3);
-	FichaDomino ficha2 = new FichaDomino(46, "GRIS 2xC", "BERDEO", 2, 0);
+	FichaDomino ficha = new FichaDomino(1, new Terreno("AMARILLO", this.CampoAmarillo_0C), new Terreno("AMARILLO", this.CampoAmarillo_0C), 0, 0);
+	FichaDomino ficha2 = new FichaDomino(1, new Terreno("AMARILLO", this.CampoAmarillo_0C), new Terreno("AMARILLO", this.CampoAmarillo_0C), 0, 0);
 	
 	@Test
 	public void testNoSePuedeRey() {

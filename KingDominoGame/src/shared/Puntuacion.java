@@ -1,12 +1,10 @@
 package shared;
 
-public class Puntuacion {
+public class Puntuacion{
 	private int puntos=0;
 	private int cantidadCoronasTotales=0;
 	private int terrenoMasExtenso=0;
 	
-	
-
 	public int getPuntos() {
 		return puntos;
 	}
@@ -18,7 +16,24 @@ public class Puntuacion {
 	public int getTerrenoMasExtenso() {
 		return terrenoMasExtenso;
 	}
-
+	
+	public int obtenerPuntajeParcial(Tablero tab){
+		
+		int filycol=tab.getTablero().length;
+		char matAux[][]=new char [filycol][filycol];
+		int corAux[][]=new int [filycol][filycol];
+		for(int i=0;i<filycol;i++) {
+			for(int j=0;j<filycol;j++) {
+				matAux[i][j]=tab.getTablero()[i][j];
+				corAux[i][j]=tab.getCorona()[i][j];
+			}
+		}
+		Tablero tableroNuevo = new Tablero(1);
+		tableroNuevo.setCorona(corAux);
+		tableroNuevo.setTablero(matAux);
+		return obtenerPuntuacion(tableroNuevo);
+	}
+	
 	public int recorrerTerreno(int fila, int columna, char tipoTerreno, int[] cantCoronas, int[][] corona, char [][]tablero) {
 
 		if ((fila < 0 || fila >= tablero.length) || (columna < 0 || columna >= tablero[0].length)

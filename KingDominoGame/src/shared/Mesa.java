@@ -19,12 +19,16 @@ public class Mesa implements IMesa{
 	}
 	
 	@Override
-	public void desplegarFichasDomino() {
+	public boolean desplegarFichasDomino() {
 		this.fichasActuales = new ArrayList<IDomino>();
 		for (int i = 0; i < 4 ; i++) {
 			this.fichasActuales.add(this.mazo.obtenerFichaMazo());
 		}
-		return;
+		return false;
+	}
+	
+	public ArrayList<IDomino> getFichasActuakes() {
+		return this.fichasActuales;
 	}
 	
 	public void mostrarMesa() {

@@ -23,7 +23,7 @@ public class PuntuacionTest {
 	{0,2,1,0,0},
 	{0,0,0,0,1}};
 	
-	Tablero tab = new Tablero (corona,tablero);
+	Tablero tab = new Tablero (1);
 	Puntuacion punt = new Puntuacion ();
 	
 	//public int obtenerPuntuacion(Tablero tab) 

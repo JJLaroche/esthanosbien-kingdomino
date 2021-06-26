@@ -68,4 +68,6 @@ public class Jugador implements IJugador {
 	public String toString() {
 		return "Jugador [nombreJugador=" + nombreJugador + "]";
 	}
+    
+    
 }
