@@ -18,7 +18,7 @@ public class Partida implements IPartida {
 	public HashMap<Jugador, Tablero> tablerosJugadores;
 	public int numeroRonda;
 	Mesa mesa;
-	public final int RONDA_FINAL = 12;
+	public final int RONDA_FINAL = 5;
 
 	public Partida(Mesa mesa) {
 		this.mesa = mesa;

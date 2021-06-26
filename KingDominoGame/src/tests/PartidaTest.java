@@ -39,6 +39,9 @@ public class PartidaTest {
 
 		//partida1.setJugador(jugador2);
 		//partida1.setJugador(jugador1);
+		
+		partida1.jugadoresActuales.add(jugador1);
+		partida1.jugadoresActuales.add(jugador2);
 
 		ArrayList<Jugador> jugs = new ArrayList<Jugador>();
 

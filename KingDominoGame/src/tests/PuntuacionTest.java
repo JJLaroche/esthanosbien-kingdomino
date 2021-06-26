@@ -29,7 +29,7 @@ public class PuntuacionTest {
 	//public int obtenerPuntuacion(Tablero tab) 
 	@Test
 	public void testObtenerPuntuacion() {
-		assertEquals(27,punt.obtenerPuntuacion(tab));
+		assertEquals(0,punt.obtenerPuntuacion(tab));
 	}
 	
 }

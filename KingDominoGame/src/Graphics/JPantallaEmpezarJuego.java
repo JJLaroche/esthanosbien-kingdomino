@@ -74,7 +74,7 @@ public class JPantallaEmpezarJuego extends JFrame implements ActionListener {
 	public void run() {
 		try {
 			Introduccion intro = new Introduccion();
-//	        intro.run();
+	        intro.run();
 			ImageIcon imgIcon = new ImageIcon("Img/icono2.png");
 			this.setIconImage(imgIcon.getImage());
 			this.setVisible(true);
